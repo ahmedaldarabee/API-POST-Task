@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Task</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        img {
+            width: 250px;
+            border-radius: 10px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .food-data {
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: fit-content;
+        }
+
+        .food-data h2{
+            text-transform: capitalize;
+        }
+
+        .food-data:nth-of-type(2){
+            padding-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+   <div class="food">
+    
+    <div class="container">
+    
+        <div class="food-data">
+            <h2 id="food-title">food title: </h2>
+            <img src="imgs/food-1.jpg" alt="food image">
+            <p id="fav">status</p>
+            <p id="preparing"> status  </p>
+            <p id="component">component info</p>
+        </div>
+
+        <div class="food-data">
+            <h2 id="food-title">food title: </h2>
+            <img src="imgs/food-2.jpg" alt="food image">
+            <p id="fav">status</p>
+            <p id="preparing"> status  </p>
+            <p id="component">component info</p>
+        </div>
+
+        <div class="food-data">
+            <h2 id="food-title">food title: </h2>
+            <img src="imgs/food-3.jpg" alt="food image">
+            <p id="fav">status</p>
+            <p id="preparing"> status  </p>
+            <p id="component">component info</p>
+        </div>
+    
+    </div>
+
+   </div>
+
+    
+</body>
+
+<script>
+   function getData(){
+    $(document).ready(function(){
+        $.ajax({
+            method: "POST",
+            url: "https://d2c0-188-247-72-136.ngrok-free.app/api/Food/GetAllFood",
+            headers: {
+                "accept": "text/plain",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyMDE4IiwiZ2l2ZW5fbmFtZSI6ImFhIiwidW5pcXVlX25hbWUiOiJhIiwiVXNlck5hbWUiOiJhYTEyIiwiVXNlclR5cGUiOiJBZG1pbiIsImp0aSI6ImViMGMxMGZlLTY0YTMtNDZlMC04OTZkLTcwZDYyMzg1NmFiYiIsImV4cCI6MTcyMjMyODA2OSwiaXNzIjoiTGF3eWVyIiwiYXVkIjoiTGF3eWVyIn0.RjAuC0k4OhITLnybui4Fne-BTpU6vjnnHQG76HqoaFc"
+            },
+            success: function(data, status, xhr) {  
+                let titles = document.querySelectorAll('#food-title');
+                let statuses = document.querySelectorAll('#fav');
+                let preparing = document.querySelectorAll('#preparing');
+                let ingredient = document.querySelectorAll('#component');
+
+                for(let i = 0 ; i < data.result.length ; i++){
+                    
+                    titles[i].innerHTML = data.result[i].foodName;
+                    statuses[i].innerHTML = data.result[i].favorite;           
+                    
+                    preparing[i].innerHTML = data.result[i].howToPrepare;           
+                    ingredient[i].innerHTML = data.result[i].ingredients;           
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
+            }
+        });
+    });
+
+   }
+
+</script>
+
+</html>
