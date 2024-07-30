@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Task</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <label for="allFoodOptions">select what you needed here : </label>
+    <select id="allFoodOptions" name="data">
+        <option value="0">Food</option>
+        <option value="1" selected>Salad</option>
+        <option value="2">Candies</option>
+        <option value="3">Juices</option>
+        <option value="4">HealthyFoods</option>
+        <option value="5">Soups</option>
+    </select>
+
+</body>
+
+<script>
+    $(document).ready(function(){
+        function sendSelectedData() {
+            var selectElement = document.getElementById('allFoodOptions');
+            var selectedValue = selectElement.value;
+
+            $.ajax({        
+                method: "POST",
+                url: "https://d2c0-188-247-72-136.ngrok-free.app/api/Food/GetAllFood",
+                // you needed this section in post and get status for each case you see username and pass !
+                headers: {
+                    "accept": "text/plain",
+                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyMDE4IiwiZ2l2ZW5fbmFtZSI6ImFhIiwidW5pcXVlX25hbWUiOiJhIiwiVXNlck5hbWUiOiJhYTEyIiwiVXNlclR5cGUiOiJBZG1pbiIsImp0aSI6ImViMGMxMGZlLTY0YTMtNDZlMC04OTZkLTcwZDYyMzg1NmFiYiIsImV4cCI6MTcyMjMyODA2OSwiaXNzIjoiTGF3eWVyIiwiYXVkIjoiTGF3eWVyIn0.RjAuC0k4OhITLnybui4Fne-BTpU6vjnnHQG76HqoaFc"
+                },
+                contentType: "application/json",
+                data: JSON.stringify({selectedValue: selectedValue}),
+                
+                success: function(data, status, xhr) {
+                    console.log('Response:', data);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // Event listener for changes in the select element
+        $('#allFoodOptions').on('change', function() {
+            sendSelectedData(); // Call the function when the selection changes
+        });
+
+        // Optional: send data when the page loads with the default selection
+        sendSelectedData();
+    });
+</script>
+
+</html>
